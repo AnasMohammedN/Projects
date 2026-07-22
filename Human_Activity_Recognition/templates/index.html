@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Human Activity Recognition</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🏃 Human Activity Recognition using Deep Learning</h1>
+        <p class="subtitle">Upload a CSV file containing sensor features to predict the human activity.</p>
+
+        <form method="POST" enctype="multipart/form-data" class="upload-form">
+            <input type="file" name="file" accept=".csv" required>
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if error %}
+        <div class="alert alert-error">{{ error }}</div>
+        {% endif %}
+
+        {% if warning %}
+        <div class="alert alert-warning">{{ warning }}</div>
+        {% endif %}
+
+        {% if preview %}
+        <h2>Uploaded Data (preview)</h2>
+        <div class="table-wrapper">{{ preview | safe }}</div>
+        {% endif %}
+
+        {% if predictions %}
+        <h2>Prediction</h2>
+        <table class="results-table">
+            <thead>
+                <tr>
+                    <th>Sample</th>
+                    <th>Predicted Activity</th>
+                    <th>Confidence</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in predictions %}
+                <tr>
+                    <td>{{ row.sample }}</td>
+                    <td><strong>{{ row.label }}</strong></td>
+                    <td>{{ row.confidence }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</body>
+</html>
